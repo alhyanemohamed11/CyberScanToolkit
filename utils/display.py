@@ -1,41 +1,53 @@
+from utils.colors import *
+
+
+LINE = "=" * 80
+SUBLINE = "-" * 80
+
+
 def print_header(target, ip):
 
-    print("\n" + "=" * 90)
-    print(" " * 30 + "CyberScan Toolkit")
-    print("=" * 90)
+    print("\n" + CYAN + BOLD + LINE + RESET)
+    print(CYAN + BOLD + "CyberScan Toolkit".center(80) + RESET)
+    print(CYAN + BOLD + LINE + RESET)
 
     print(f"Target      : {target}")
     print(f"IP Address  : {ip}")
 
-    print("=" * 90)
+    print(CYAN + LINE + RESET)
 
 
 def print_results(open_ports):
 
-    print("\nScan Results")
+    print("\n" + BOLD + "PORT SCAN RESULTS" + RESET)
+    print(SUBLINE)
 
-    print("=" * 90)
+    print(
+        f"{'PORT':<10}"
+        f"{'SERVICE':<15}"
+        f"{'BANNER'}"
+    )
 
-    print(f"{'PORT':<10}{'SERVICE':<15}{'BANNER'}")
-
-    print("-" * 90)
+    print(SUBLINE)
 
     for port in open_ports:
 
-        banner = port["banner"]
+        banner = port.get("banner")
 
         if banner:
-            banner = banner.splitlines()[0][:60]
+            banner = banner.splitlines()[0]
+            if len(banner) > 45:
+                banner = banner[:45] + "..."
         else:
             banner = "No banner"
 
         print(
-            f"{port['port']:<10}"
+            f"{GREEN}{port['port']:<10}{RESET}"
             f"{port['service']:<15}"
             f"{banner}"
         )
 
-    print("=" * 90)
+    print(SUBLINE)
 
 
 def print_ssl_info(info):
@@ -43,28 +55,87 @@ def print_ssl_info(info):
     if info is None:
         return
 
-    print("\nSSL Certificate Information")
+    print("\n" + BOLD + "SSL CERTIFICATE" + RESET)
+    print(SUBLINE)
 
-    print("=" * 90)
+    print(f"Subject         : {info['subject']}")
+    print(f"Issuer          : {info['issuer']}")
+    print(f"Valid Until     : {info['valid_until']}")
+    print(f"Days Remaining  : {info['days_remaining']}")
 
-    print(f"Subject           : {info['subject']}")
-    print(f"Organization      : {info['organization']}")
-    print(f"Issuer            : {info['issuer']}")
-    print(f"Issuer CN         : {info['issuer_cn']}")
-    print(f"Version           : {info['version']}")
-    print(f"Serial Number     : {info['serial']}")
-    print(f"Valid From        : {info['valid_from']}")
-    print(f"Valid Until       : {info['valid_until']}")
-    print(f"Days Remaining    : {info['days_remaining']}")
-    print(f"Certificate Status: {info['status']}")
+    status = info["status"]
 
-    if info["alt_names"]:
+    if status.upper() == "VALID":
+        status = GREEN + status + RESET
+    else:
+        status = RED + status + RESET
 
-        print("\nAlternative Names")
+    print(f"Status          : {status}")
 
-        print("-" * 90)
+    print(SUBLINE)
 
-        for domain in info["alt_names"]:
-            print(f" - {domain}")
 
-    print("=" * 90)
+def display_header_analysis(analysis):
+
+    if analysis is None:
+        return
+
+    print("\n" + BOLD + "HTTP SECURITY HEADERS" + RESET)
+    print(SUBLINE)
+
+    print(f"URL          : {analysis['url']}")
+    print(f"Status Code  : {analysis['status_code']}")
+    print(f"Web Server   : {analysis['server']}")
+
+    print()
+
+    print(
+        f"{'HEADER':<35}"
+        f"{'STATUS':<12}"
+        f"VALUE"
+    )
+
+    print(SUBLINE)
+
+    for header, info in analysis["headers"].items():
+
+        if info["present"]:
+            status = GREEN + "Present" + RESET
+        else:
+            status = RED + "Missing" + RESET
+
+        value = info["value"]
+
+        if value is None:
+            value = "-"
+
+        elif len(value) > 40:
+            value = value[:40] + "..."
+
+        print(
+            f"{header:<35}"
+            f"{status:<20}"
+            f"{value}"
+        )
+
+    print(SUBLINE)
+
+    score = analysis["score"]
+    total = analysis["total"]
+
+    percent = (score / total) * 100
+
+    if percent >= 80:
+        color = GREEN
+    elif percent >= 50:
+        color = YELLOW
+    else:
+        color = RED
+
+    print(
+        color +
+        f"Security Score : {score}/{total} ({percent:.0f}%)"
+        + RESET
+    )
+
+    print(CYAN + LINE + RESET)
