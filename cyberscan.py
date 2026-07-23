@@ -5,6 +5,7 @@ from scanner.ssl_checker import get_ssl_certificate
 from scanner.headers import analyze_security_headers
 
 from report.json_report import save_json_report
+from report.html_report import save_html_report
 
 from utils.display import (
     print_header,
@@ -31,11 +32,12 @@ def main():
         print(RED + "[-] Could not resolve hostname." + RESET)
         return
 
+    # Display target information
     print_header(target, ip)
 
     print("\nScanning common TCP ports...\n")
 
-    # Scan ports
+    # Port Scan
     open_ports = scan_ports(ip)
 
     if not open_ports:
@@ -59,7 +61,10 @@ def main():
 
             header_analysis = analyze_security_headers(target)
 
-    # Display scan results
+    # -----------------------------
+    # Display Results
+    # -----------------------------
+
     print_results(open_ports)
 
     if ssl_info:
@@ -68,9 +73,9 @@ def main():
     if header_analysis:
         display_header_analysis(header_analysis)
 
-    # --------------------------------------------------
-    # Create one dictionary containing the entire scan
-    # --------------------------------------------------
+    # -----------------------------
+    # Build Scan Result Dictionary
+    # -----------------------------
 
     scan_result = {
 
@@ -86,13 +91,17 @@ def main():
 
     }
 
-    # Save JSON report
+    # -----------------------------
+    # Generate Reports
+    # -----------------------------
 
-    report_path = save_json_report(scan_result)
+    json_report = save_json_report(scan_result)
 
-    # --------------------------------------------------
+    html_report = save_html_report(scan_result)
+
+    # -----------------------------
     # Summary
-    # --------------------------------------------------
+    # -----------------------------
 
     print("\n" + CYAN + BOLD + "=" * 80 + RESET)
     print(CYAN + BOLD + "SCAN SUMMARY".center(80) + RESET)
@@ -127,15 +136,16 @@ def main():
             f"{color}{score}/{total} ({percentage:.0f}%){RESET}"
         )
 
-    print(f"JSON Report      : {report_path}")
+    print(f"JSON Report      : {json_report}")
+    print(f"HTML Report      : {html_report}")
 
     print(CYAN + "=" * 80 + RESET)
 
     print()
 
     print(GREEN + "✓ Scan completed successfully." + RESET)
-
-    print(GREEN + f"✓ JSON report saved to: {report_path}" + RESET)
+    print(GREEN + f"✓ JSON report saved to : {json_report}" + RESET)
+    print(GREEN + f"✓ HTML report saved to : {html_report}" + RESET)
 
     print()
 
