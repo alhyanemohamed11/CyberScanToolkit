@@ -4,6 +4,8 @@ from scanner.banner import grab_banner
 from scanner.ssl_checker import get_ssl_certificate
 from scanner.headers import analyze_security_headers
 
+from report.json_report import save_json_report
+
 from utils.display import (
     print_header,
     print_results,
@@ -22,19 +24,18 @@ def main():
         print(RED + "[-] No hostname entered." + RESET)
         return
 
-    # DNS Resolution
+    # Resolve hostname
     ip = resolve_hostname(target)
 
     if ip is None:
         print(RED + "[-] Could not resolve hostname." + RESET)
         return
 
-    # Display target information
     print_header(target, ip)
 
     print("\nScanning common TCP ports...\n")
 
-    # Port Scan
+    # Scan ports
     open_ports = scan_ports(ip)
 
     if not open_ports:
@@ -58,7 +59,7 @@ def main():
 
             header_analysis = analyze_security_headers(target)
 
-    # Display Results
+    # Display scan results
     print_results(open_ports)
 
     if ssl_info:
@@ -67,7 +68,32 @@ def main():
     if header_analysis:
         display_header_analysis(header_analysis)
 
+    # --------------------------------------------------
+    # Create one dictionary containing the entire scan
+    # --------------------------------------------------
+
+    scan_result = {
+
+        "target": target,
+
+        "ip": ip,
+
+        "ports": open_ports,
+
+        "ssl": ssl_info,
+
+        "headers": header_analysis
+
+    }
+
+    # Save JSON report
+
+    report_path = save_json_report(scan_result)
+
+    # --------------------------------------------------
     # Summary
+    # --------------------------------------------------
+
     print("\n" + CYAN + BOLD + "=" * 80 + RESET)
     print(CYAN + BOLD + "SCAN SUMMARY".center(80) + RESET)
     print(CYAN + BOLD + "=" * 80 + RESET)
@@ -101,9 +127,17 @@ def main():
             f"{color}{score}/{total} ({percentage:.0f}%){RESET}"
         )
 
+    print(f"JSON Report      : {report_path}")
+
     print(CYAN + "=" * 80 + RESET)
 
-    print("\n" + GREEN + "✓ Scan completed successfully." + RESET + "\n")
+    print()
+
+    print(GREEN + "✓ Scan completed successfully." + RESET)
+
+    print(GREEN + f"✓ JSON report saved to: {report_path}" + RESET)
+
+    print()
 
 
 if __name__ == "__main__":
@@ -112,4 +146,5 @@ if __name__ == "__main__":
         main()
 
     except KeyboardInterrupt:
+
         print("\n" + RED + "[-] Scan interrupted by user." + RESET)
