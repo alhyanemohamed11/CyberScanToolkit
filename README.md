@@ -177,3 +177,55 @@ github_com_20260731_145210.html
 
 - **JSON Report** — Machine-readable output for automation and further processing.
 - **HTML Report** — Human-readable report that can be opened in any web browser.
+
+## 🛠️ Technologies Used
+
+### Programming Language
+
+- Python 3
+
+### Python Libraries
+
+- socket
+- ssl
+- requests
+- json
+- pathlib
+- datetime
+
+### Networking Concepts
+
+- DNS Resolution
+- TCP Socket Programming
+- Banner Grabbing
+- SSL/TLS
+- HTTP Security Headers
+
+## 🚀 Future Improvements
+
+Some features planned for future releases:
+
+- Multi-threaded port scanning
+- Custom port range scanning
+- WHOIS lookup
+- DNS record enumeration
+- Command-line arguments
+- PDF report generation
+- Export reports in CSV format
+- CVE lookup for detected services
+- Operating system fingerprinting
+
+## 👨‍💻 Author
+
+**Mohamed Alhayane**
+
+Engineering Student in Security Information Technology
+
+GitHub:
+https://github.com/alhyanemohamed11
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+See the `LICENSE` file for more information.
