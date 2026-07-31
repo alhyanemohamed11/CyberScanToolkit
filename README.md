@@ -54,3 +54,52 @@ CyberScanToolkit/
     ├── colors.py
     └── display.py
 ```
+## 🚀 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/CyberScanToolkit.git
+```
+
+Replace `YOUR_USERNAME` with your GitHub username.
+
+### 2. Go to the project directory
+
+```bash
+cd CyberScanToolkit
+```
+
+### 3. Create a virtual environment
+
+Linux/macOS:
+
+```bash
+python3 -m venv .venv
+```
+
+### 4. Activate the virtual environment
+
+Linux/macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+Windows (PowerShell):
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+Windows (Command Prompt):
+
+```cmd
+.venv\Scripts\activate.bat
+```
+
+### 5. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
