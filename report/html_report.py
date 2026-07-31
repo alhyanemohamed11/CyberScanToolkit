@@ -127,6 +127,67 @@ def save_html_report(scan_result):
         </p>
         """
 
+
+
+    # ------------------------------------------
+# Security Assessment
+# ------------------------------------------
+
+    assessment_section = ""
+
+    assessment = scan_result.get("assessment")
+
+    if assessment:
+        findings = ""
+
+        for item in assessment["findings"]:
+          findings += f"<li>✅ {item}</li>"
+
+        warnings = ""
+
+        for item in assessment["warnings"]:
+            warnings += f"<li>⚠ {item}</li>"
+
+        recommendations = ""
+
+        for item in assessment["recommendations"]:
+            recommendations += f"<li>💡 {item}</li>"
+        assessment_section = f"""
+        <h2>Security Assessment</h2>
+
+       <table>
+
+        <tr>
+            <td><strong>Overall Score</strong></td>
+            <td>{assessment['score']} / {assessment['max_score']}</td>
+        </tr>
+
+        <tr>
+            <td><strong>Rating</strong></td>
+            <td>{assessment['rating']}</td>
+        </tr>
+
+    </table>
+
+    <h3>Findings</h3>
+
+    <ul>
+        {findings}
+    </ul>
+
+    <h3>Warnings</h3>
+
+    <ul>
+        {warnings}
+    </ul>
+
+    <h3>Recommendations</h3>
+
+    <ul>
+        {recommendations}
+    </ul>
+    """
+
     # ------------------------------------------
     # HTML
     # ------------------------------------------
