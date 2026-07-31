@@ -20,6 +20,13 @@ def save_json_report(scan_result):
     report_path = reports_dir / filename
 
     with open(report_path, "w", encoding="utf-8") as file:
-        json.dump(scan_result, file, indent=4)
+
+        json.dump(
+            scan_result,
+            file,
+            indent=4,
+            ensure_ascii=False,
+            sort_keys=True
+        )
 
     return report_path
