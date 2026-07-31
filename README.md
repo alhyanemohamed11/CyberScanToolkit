@@ -25,3 +25,32 @@ The toolkit also generates professional **JSON** and **HTML** reports summarizin
 - 📄 JSON report generation
 - 🌍 HTML report generation
 - 🎨 Professional terminal interface
+
+
+## 📁 Project Structure
+
+```text
+CyberScanToolkit/
+│
+├── cyberscan.py                 # Main application
+├── requirements.txt             # Project dependencies
+├── README.md                    # Project documentation
+│
+├── scanner/                     # Scanning modules
+│   ├── dns_lookup.py
+│   ├── port_scanner.py
+│   ├── banner.py
+│   ├── ssl_checker.py
+│   ├── headers.py
+│   └── security_assessment.py
+│
+├── report/                      # Report generators
+│   ├── json_report.py
+│   └── html_report.py
+│
+├── reports/                     # Generated reports
+│
+└── utils/                       # Utility modules
+    ├── colors.py
+    └── display.py
+```
