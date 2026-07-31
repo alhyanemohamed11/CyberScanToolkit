@@ -36,8 +36,10 @@ def print_results(open_ports):
 
         if banner:
             banner = banner.splitlines()[0]
+
             if len(banner) > 45:
                 banner = banner[:45] + "..."
+
         else:
             banner = "No banner"
 
@@ -137,5 +139,77 @@ def display_header_analysis(analysis):
         f"Security Score : {score}/{total} ({percent:.0f}%)"
         + RESET
     )
+
+    print(CYAN + LINE + RESET)
+
+
+# ==========================================================
+# SECURITY ASSESSMENT
+# ==========================================================
+
+def display_security_assessment(assessment):
+
+    if assessment is None:
+        return
+
+    print("\n" + BOLD + "SECURITY ASSESSMENT" + RESET)
+    print(SUBLINE)
+
+    score = assessment["score"]
+    max_score = assessment["max_score"]
+    rating = assessment["rating"]
+
+    percentage = (score / max_score) * 100
+
+    if percentage >= 90:
+        color = GREEN
+
+    elif percentage >= 70:
+        color = GREEN
+
+    elif percentage >= 40:
+        color = YELLOW
+
+    else:
+        color = RED
+
+    print(f"Overall Score : {color}{score}/{max_score}{RESET}")
+    print(f"Rating        : {color}{rating}{RESET}")
+
+    # -----------------------------
+    # Findings
+    # -----------------------------
+
+    if assessment["findings"]:
+
+        print("\nFindings")
+
+        for finding in assessment["findings"]:
+
+            print(f"  {GREEN}✓{RESET} {finding}")
+
+    # -----------------------------
+    # Warnings
+    # -----------------------------
+
+    if assessment["warnings"]:
+
+        print("\nWarnings")
+
+        for warning in assessment["warnings"]:
+
+            print(f"  {YELLOW}!{RESET} {warning}")
+
+    # -----------------------------
+    # Recommendations
+    # -----------------------------
+
+    if assessment["recommendations"]:
+
+        print("\nRecommendations")
+
+        for recommendation in assessment["recommendations"]:
+
+            print(f"  {CYAN}>{RESET} {recommendation}")
 
     print(CYAN + LINE + RESET)
