@@ -103,3 +103,77 @@ Windows (Command Prompt):
 ```bash
 pip install -r requirements.txt
 ```
+## ▶️ Usage
+
+Run the scanner:
+
+```bash
+python3 cyberscan.py
+```
+
+When prompted, enter the target hostname:
+
+```text
+Enter a hostname: github.com
+```
+
+The toolkit will perform the following steps:
+
+1. Resolve the hostname to an IP address.
+2. Scan common TCP ports.
+3. Detect running services.
+4. Grab service banners.
+5. Analyze the SSL/TLS certificate (if HTTPS is available).
+6. Check HTTP security headers.
+7. Generate a security assessment.
+8. Save the results as JSON and HTML reports.
+
+### Example Output
+
+```text
+============================================================
+CyberScan Toolkit
+============================================================
+
+Target      : github.com
+IP Address  : 140.82.114.4
+
+PORT SCAN RESULTS
+
+PORT    SERVICE    BANNER
+
+22      SSH        SSH-2.0-...
+80      HTTP       HTTP/1.1 301 Moved Permanently
+443     HTTPS      No banner
+
+SSL CERTIFICATE
+
+Status          : VALID
+Issuer          : Sectigo Limited
+
+HTTP SECURITY HEADERS
+
+Security Score  : 5/6 (83%)
+
+SECURITY ASSESSMENT
+
+Overall Score   : 8/10
+Rating          : Good
+
+✓ Scan completed successfully.
+```
+
+### Generated Reports
+
+After each scan, CyberScan Toolkit automatically creates two reports inside the `reports/` directory:
+
+```text
+reports/
+
+github_com_20260731_145210.json
+
+github_com_20260731_145210.html
+```
+
+- **JSON Report** — Machine-readable output for automation and further processing.
+- **HTML Report** — Human-readable report that can be opened in any web browser.
